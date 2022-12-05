@@ -5,10 +5,10 @@
 #include "Library.h"
 
 int main() {
+    Library library;
+    library.readFile();
+    library.timSort("author");
 
-    // library.readFile();
-    // library.timSort("year");
-    
     return 0;
 }
 

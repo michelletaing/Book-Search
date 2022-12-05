@@ -8,7 +8,8 @@
 #include <sstream>
 #include <iomanip>
 
-template <typename T>
+// Remove all templates
+// template <typename T>
 class Library {
     private: 
         struct Book {
@@ -25,9 +26,15 @@ class Library {
         };
 
         std::vector<Book> library;
+
         // ==== PRIVATE HELPER FUNCTIONS ==== //
-        void helperTimSort(std::vector<T> vals); 
+        template <typename T>
+        void helperTimSort(std::vector<T> vals);
+
+        template <typename T> 
         void insertionSort(std::vector<T>& vals, int left, int right);
+
+        template <typename T>
         void merge(std::vector<T>& vals, int left, int mid, int right);
         
     public: 
@@ -42,7 +49,7 @@ class Library {
 };
 
 template <typename T>
-void Library<T>::insertionSort(std::vector<T>& vals, int left, int right) {
+void Library::insertionSort(std::vector<T>& vals, int left, int right) {
     for (int i = left + 1; i <= right; i++) { // first element is always placed in sorted
 		T key = vals[i];
 		int j = i - 1; 
@@ -57,7 +64,7 @@ void Library<T>::insertionSort(std::vector<T>& vals, int left, int right) {
 }
 
 template <typename T>
-void Library<T>::merge(std::vector<T>& vals, int left, int mid, int right) {
+void Library::merge(std::vector<T>& vals, int left, int mid, int right) {
     // Split vals in half: X is first half, Y is second half
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -104,7 +111,7 @@ void Library<T>::merge(std::vector<T>& vals, int left, int mid, int right) {
 }
 
 template <typename T>
-void Library<T>::helperTimSort(std::vector<T> vals) {
+void Library::helperTimSort(std::vector<T> vals) {
     int run = 32;
 
     // 1. Insertion sort on subarrays of size = run
@@ -122,119 +129,21 @@ void Library<T>::helperTimSort(std::vector<T> vals) {
                 merge(vals, left, mid, right);
         }
     }
-}
 
-template <typename T>
-void Library<T>::timSort(std::string type) {
-    /*
-    if (type == "author" || type == "title" || type == "publisher" || type == "ISBN") {
-        std::vector<std::string> strings;
-
-        for (int i = 0; i < library.size(); i++) {
-            if (type == "author")
-                strings.push_back(library[i].Book::author);
-        }
-        
-        helperTimSort(strings);
+    for (int i = 0; i < 100; i++) {
+        std::cout << vals[i] << std::endl;
     }
-        
-    else {
-        std::vector<int> ints;
 
-        for (int i = 0; i < library.size(); i++)
-            ints.push_back(library[i].Book::year);
 
-        helperTimSort(ints);
-
-    }
-    */
-    
-    helperTimSort(library);
-    
 }
 
-template <typename T>
-void Library<T>::readFile() {
-    std::ifstream myfStream;
-	myfStream.open("books.csv");
-	if (!myfStream.is_open())
-		std::cout << "File failed to load" << std::endl;
-	std::string ISBN, title, author, year, publisher, junk;
 
-	std::string line;
-	bool isValid = true;
-	// std::vector <Book> library;
-	int count = 1;
-	getline(myfStream, line);
-	while (getline(myfStream, line)) {
-		if (std::count(line.begin(), line.end(), ';') == 7) {
 
-			std::stringstream myStrStream(line);
-
-			getline(myStrStream, ISBN, ';');
-			ISBN = ISBN.substr(1, ISBN.length() - 2);
-
-			getline(myStrStream, title, ';');
-
-			title = title.substr(1, title.length() - 2);
-
-			getline(myStrStream, author, ';');
-			author = author.substr(1, author.length() - 2);
-
-			getline(myStrStream, year, ';');
-			year = year.substr(1, year.length() - 2);
-
-			getline(myStrStream, publisher, ';');
-			publisher = publisher.substr(1, publisher.length() - 2);
-
-			getline(myStrStream, junk, '\n');
-
-			for (int i = 0; i < ISBN.length(); i++) {
-				if (!isdigit(ISBN[i]) && ISBN[i] != 88)
-					isValid = false;
-			}
-			for (int i = 0; i < year.length(); i++) {
-				if (!isdigit(year[i]))
-					isValid = false;
-			}
-			
-			for (int i = 0; i < title.length(); i++) {
-				if (title[i] > 126 || title[i] < 32)
-					isValid = false;
-			}
-			for (int i = 0; i < author.length(); i++) {
-				if (author[i] > 126 || author[i] < 32)
-					isValid = false;
-			}
-			for (int i = 0; i < publisher.length(); i++) {
-				if (publisher[i] > 126 || publisher[i] < 32)
-					isValid = false;
-			}
-			
-
-			if (isValid)
-			    library.emplace_back(ISBN, title, author, stoi(year), publisher);
-		}
-		isValid = true;
-		count++;
-	}
-
-	myfStream.close();
-
-	/*
-    int count2 = 1;
-	for (Book b : library) {
-		std::cout << count2 << " ";
-		b.printData();
-		count2++;
-	}
-    */
-}
-
-template <typename T>
-void Library<T>::printData()
+/*
+void Library::printData()
 {
 	std::cout << "ISBN: " << Book::ISBN << "\t" << "Title: " << Book::title << "\t" << "Author: " << Book::author << "\t" << "Year: " << Book::year << "\t" << "Publisher: " << Book::publisher << std::endl;
 }
+*/
 
 #endif
