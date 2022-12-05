@@ -30,7 +30,7 @@ class Library {
         // ==== PRIVATE HELPER FUNCTIONS ==== //
         // Timsort
         template <typename T>
-        void helperTimSort(std::vector<T> vals);
+        void helperTimSort(std::vector<T>& vals);
         template <typename T> 
         void insertionSort(std::vector<T>& vals, int left, int right);
         template <typename T>
@@ -124,7 +124,7 @@ void Library::merge(std::vector<T>& vals, int left, int mid, int right) {
 }
 
 template <typename T>
-void Library::helperTimSort(std::vector<T> vals) {
+void Library::helperTimSort(std::vector<T>& vals) {
     int run = 32;
 
     // 1. Insertion sort on subarrays of size = run
@@ -142,8 +142,6 @@ void Library::helperTimSort(std::vector<T> vals) {
                 merge(vals, left, mid, right);
         }
     }
-
-    printData(vals, 300);
 }
 
 template <typename T>

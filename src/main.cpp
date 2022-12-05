@@ -49,7 +49,31 @@ int main() {
         
         else if (searchOption == 2 && sortOption == 2) {
             library.radixSortString("title");
-            
+
+        }
+
+        else if (searchOption == 3 && sortOption == 1) {
+            library.timSort("author");
+        }
+
+        else if (searchOption == 3 && sortOption == 2) {
+            library.radixSortString("author");
+        }
+
+        else if (searchOption == 4 && sortOption == 1) {
+            library.timSort("publisher");
+        }
+
+        else if (searchOption == 4 && sortOption == 2) {
+            library.radixSortString("publisher");
+        }
+
+        else if (searchOption == 5 && sortOption == 1) {
+            library.timSort("year");
+        }
+
+        else if (searchOption == 5 && sortOption == 2) {
+            library.radixSortInt("year");
         }
         
 

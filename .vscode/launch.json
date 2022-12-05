@@ -1,6 +1,14 @@
 {
     "configurations": [
         {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug in Terminal",
+            "program": "${fileDirname}/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${fileDirname}"
+        },
+        {
             "name": "C/C++: clang++ build and debug active file",
             "type": "cppdbg",
             "request": "launch",

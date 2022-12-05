@@ -30,7 +30,9 @@ void Library::radixSortString(std::string type) {
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	double seconds = ((double)duration.count()) / ((double) 1000000);
 
-	std::cout << "Radix Sort (Integers) was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+	printData(strings, 300);
+
+	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
 }
 
 void Library::helperRadixSortString(std::vector<std::string>& inputVector) {
@@ -39,8 +41,6 @@ void Library::helperRadixSortString(std::vector<std::string>& inputVector) {
     for (int i = minSize - 1; i >= 0; i--){
         countingSortString(inputVector, i);
     }
-
-	printData(inputVector, 300);
 }
 
 void Library::countingSortString(std::vector<std::string>& inputVector, int letterPlace) {
@@ -107,7 +107,9 @@ void Library::radixSortInt(std::string type) {
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	double seconds = ((double)duration.count()) / ((double) 1000000);
 
-	std::cout << "Radix Sort (Integers) was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+	printData(ints, 300);
+
+	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
 }
 
 void Library::helperRadixSortInt(std::vector<int>& inputVector) {
@@ -121,9 +123,6 @@ void Library::helperRadixSortInt(std::vector<int>& inputVector) {
     for (int digitPlace = 1; maxVal / digitPlace > 0; digitPlace *= 10){
         countingSortInt(inputVector, digitPlace);
     }
-	
-	printData(inputVector, 300);
-
 }
 
 void Library::countingSortInt(std::vector<int>& inputVector, int digitPlace) {
@@ -177,7 +176,16 @@ void Library::timSort(std::string type) {
 				strings.push_back(library[i].publisher);	   
         }
         
-        helperTimSort(strings);
+		auto start = std::chrono::high_resolution_clock::now();    
+    	helperTimSort(strings);
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		double seconds = ((double)duration.count()) / ((double) 1000000);
+
+		printData(strings, 300);
+
+		std::cout << "Timsort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+        
     }
         
     else {
@@ -186,7 +194,15 @@ void Library::timSort(std::string type) {
         for (int i = 0; i < library.size(); i++)
             ints.push_back(library[i].year);
 
+		auto start = std::chrono::high_resolution_clock::now();
         helperTimSort(ints);
+		auto stop = std::chrono::high_resolution_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+		double seconds = ((double)duration.count()) / ((double) 1000000);
+
+		printData(ints, 300);
+
+		std::cout << "Timsort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
 
     }
     
