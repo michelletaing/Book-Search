@@ -28,23 +28,36 @@ class Library {
         std::vector<Book> library;
 
         // ==== PRIVATE HELPER FUNCTIONS ==== //
+        // Timsort
         template <typename T>
         void helperTimSort(std::vector<T> vals);
-
         template <typename T> 
         void insertionSort(std::vector<T>& vals, int left, int right);
-
         template <typename T>
         void merge(std::vector<T>& vals, int left, int mid, int right);
+
+        // Radix - int
+        void helperRadixSortInt(std::vector<int>& inputVector);
+        void countingSortInt(std::vector<int>& inputVector, int digitPlace);
+
+        // Radix - string
+        void helperRadixSortString(std::vector<std::string>& inputVector);
+        void countingSortString(std::vector<std::string>& inputVector, int letterPlace);
+        int findMinStringLength(std::vector<std::string> inputVector);
+
+        // Print
+        template <typename T>
+        void printData(std::vector<T>& library, int n);
         
     public: 
          
         // ==== SORTING ALGORITHMS ==== //
         void timSort(std::string type);
+        void radixSortString(std::string type);
+        void radixSortInt(std::string type);
 
         // ==== READ AND PRINT ==== //
         void readFile();
-        void printData();
         
 };
 
@@ -130,20 +143,13 @@ void Library::helperTimSort(std::vector<T> vals) {
         }
     }
 
-    for (int i = 0; i < 100; i++) {
-        std::cout << vals[i] << std::endl;
-    }
-
-
+    printData(vals, 300);
 }
 
-
-
-/*
-void Library::printData()
-{
-	std::cout << "ISBN: " << Book::ISBN << "\t" << "Title: " << Book::title << "\t" << "Author: " << Book::author << "\t" << "Year: " << Book::year << "\t" << "Publisher: " << Book::publisher << std::endl;
+template <typename T>
+void Library::printData(std::vector<T>& library, int n) {
+    for (int i = 0; i < n; i++)
+        std::cout << library[i] << std::endl;
 }
-*/
 
 #endif
