@@ -10,47 +10,55 @@
 #include "Library.h"
 
 // ===== RADIX SORT (STRING) ===== //
-void Library::radixSortString(std::string type) {
-	std::vector<std::string> strings;
-
-    for (int i = 0; i < library.size(); i++) {
-        if (type == "author")
-            strings.push_back(library[i].author);
-        if (type == "title")
-            strings.push_back(library[i].title);
-		if (type == "ISBN")
-			strings.push_back(library[i].ISBN);	
-		if (type == "publisher")
-			strings.push_back(library[i].publisher);			   
-    }
-
+void Library::radixSortString(std::string type, std::string find) {
 	auto start = std::chrono::high_resolution_clock::now();    
-    // helperRadixSortString(strings);
-	helperRadixSortString(strings);
+	helperRadixSortString(library, type);
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	double seconds = ((double)duration.count()) / ((double) 1000000);
 
-	testPrint(strings, 300);
-
-	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+	// std::cout << "======== (Preview) Sorting the data... ========" << std::endl;
+	// printData(library, type, 100);
+	findData(find, type);
+	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl << std::endl;
+	
 }
 
-void Library::helperRadixSortString(std::vector<std::string>& inputVector) {
-	int maxSize = findMaxStringLength(inputVector);
+void Library::helperRadixSortString(std::vector<Book>& library, std::string type) {
+	int minSize = findMinStringLength(library, type);
 
-    for (int i = maxSize - 1; i >= 0; i--){
-        countingSortString(inputVector, i);
+    for (int i = minSize - 1; i >= 0; i--){
+        countingSortString(library, i, type);
     }
 }
 
-void Library::countingSortString(std::vector<std::string>& inputVector, int letterPlace) {
-	std::string* resultArray = new std::string[inputVector.size()];
+void Library::countingSortString(std::vector<Book>& library, int letterPlace, std::string type) {
+	Book* resultArray = new Book[library.size()];
 
     int letterCount[257] = {0};
 
-    for (std::string value : inputVector){
-		letterCount[getASCII(value, letterPlace)]++;
+	if (type == "author"){
+		for (int i = 0; i < library.size(); i++){
+			letterCount[getASCII(library[i].author, letterPlace)]++;
+		}
+	}
+
+	if (type == "title"){
+		for (int i = 0; i < library.size(); i++){
+			letterCount[getASCII(library[i].title, letterPlace)]++;
+		}
+	}
+
+	if (type == "ISBN"){
+		for (int i = 0; i < library.size(); i++){
+			letterCount[getASCII(library[i].ISBN, letterPlace)]++;
+		}
+	}
+
+	if (type == "publisher"){
+		for (int i = 0; i < library.size(); i++){
+			letterCount[getASCII(library[i].publisher, letterPlace)]++;
+		}
 	}
 
     //GO THROUGH THE LETTERCOUNT ARRAY AND CALCULATE THE CUMULATIVE FREQUENCY
@@ -59,66 +67,112 @@ void Library::countingSortString(std::vector<std::string>& inputVector, int lett
         letterCount[i] += letterCount[i - 1];
     }
 
-    for (int i = inputVector.size() - 1; i >= 0; i--){
-        resultArray[--letterCount[getASCII(inputVector[i], letterPlace)]] = inputVector[i];
+    for (int i = library.size() - 1; i >= 0; i--){
+
+		if (type == "author"){
+			resultArray[--letterCount[getASCII(library[i].author, letterPlace)]] = library[i];
+		}
+
+		if (type == "title"){
+			resultArray[--letterCount[getASCII(library[i].title, letterPlace)]] = library[i];
+		}
+
+		if (type == "ISBN"){
+			resultArray[--letterCount[getASCII(library[i].ISBN, letterPlace)]] = library[i];
+		}
+
+		if (type == "publisher"){
+			resultArray[--letterCount[getASCII(library[i].publisher, letterPlace)]] = library[i];
+		}
     }
     
-	for (int i = 0; i < inputVector.size(); i++){
-		inputVector[i] = resultArray[i];
+	for (int i = 0; i < library.size(); i++){
+		library[i] = resultArray[i];
 	}
     
 	delete[] resultArray;
 }
 
-int Library::findMaxStringLength(std::vector<std::string> inputVector) {
+int Library::getASCII(std::string input, int letterIndex){
+	if (input.size() < letterIndex){
+		return -1;
+	}
+	else{
+		return input.at(letterIndex);
+	}
+}
+
+int Library::findMinStringLength(std::vector<Book>& library, std::string type) {
 	int minSize = INT_MAX;
 
-    for (int i = 0; i < inputVector.size(); i++){
-        if (inputVector[i].size() < minSize){
-            minSize = inputVector[i].size();
-        }
+    for (int i = 0; i < library.size(); i++){
+
+		if (type == "author"){
+			if (library[i].author.size() < minSize){
+            	minSize = library[i].author.size();
+        	}
+		}
+
+		if (type == "title"){
+			if (library[i].title.size() < minSize){
+            	minSize = library[i].title.size();
+        	}
+		}
+
+		if (type == "ISBN"){
+			if (library[i].ISBN.size() < minSize){
+            	minSize = library[i].ISBN.size();
+        	}
+		}
+
+		if (type == "publisher"){
+			if (library[i].publisher.size() < minSize){
+            	minSize = library[i].publisher.size();
+        	}
+		}	
     }
     return minSize;
 }
 
 // ===== RADIX SORT (INT) ===== //
-void Library::radixSortInt(std::string type) {
-	std::vector<int> ints;
-
-    for (int i = 0; i < library.size(); i++)
-        ints.push_back(library[i].year);
-
+void Library::radixSortInt(std::string type, std::string find) {
 	auto start = std::chrono::high_resolution_clock::now(); 
-    helperRadixSortInt(ints);
+    helperRadixSortInt(library);
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	double seconds = ((double)duration.count()) / ((double) 1000000);
 
-	testPrint(ints, 300);
-
-	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+	// std::cout << "======== (Preview) Sorting the data... ========" << std::endl;
+	// printData(library, "year", 100);
+	findData(find, type);
+	std::cout << "Radix Sort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl << std::endl;
 }
 
-void Library::helperRadixSortInt(std::vector<int>& inputVector) {
+void Library::helperRadixSortInt(std::vector<Book>& library) {
 	//FIRST DETERMINE THE MAXIMUM VALUE IN THE VECTOR AS THIS WILL BE THE AMOUNT OF TIMES THE SORT WILL EXECUTE
-    //MAX_ELEMENT WAS DERIVED FROM THE CPLUSPLUS WEBSITE
-    auto it = std::max_element(inputVector.begin(), inputVector.end());
-    int maxVal = *it;
+	int maxVal = 0;
+
+	for (int i = 0; i < library.size(); i++){
+		if (library[i].year > maxVal){
+			maxVal = library[i].year;
+		}
+	}
 
     //EXECUTE THE COUNTING SORT PORTION EQUAL TO THE NUMBER OF PLACES IN THE LARGEST ELEMENT
     //GOES UNTIL THE VALUE OF DIGITSPLACE IS LARGER THAN THE MAXVAL (RESULTING IN 0 AND BREAKING THE LOOP)
     for (int digitPlace = 1; maxVal / digitPlace > 0; digitPlace *= 10){
-        countingSortInt(inputVector, digitPlace);
+        countingSortInt(library, digitPlace);
     }
 }
 
-void Library::countingSortInt(std::vector<int>& inputVector, int digitPlace) {
-	int* resultArray = new int[inputVector.size() + 1];
+//THIS IS USED FOR SORTING THE YEARS
+void Library::countingSortInt(std::vector<Book>& library, int digitPlace) {
+	Book* resultArray = new Book[library.size() + 1];
     int digitCount[10] = {0};
 
-    for (int i = 0; i < inputVector.size(); i++){
+    for (int i = 0; i < library.size(); i++){
         //KEEP A COUNT OF EACH DIGIT (FOR A SPECIFIC PLACE) IN THE INPUTVECTOR
-        int digit = (inputVector[i] / digitPlace) % 10;
+        int digit = (library[i].year / digitPlace) % 10;
         digitCount[digit]++;
     }
 
@@ -128,18 +182,18 @@ void Library::countingSortInt(std::vector<int>& inputVector, int digitPlace) {
         digitCount[i] += digitCount[i - 1];
     }
 
-    for (int i = inputVector.size() - 1; i >= 0; i--){
+    for (int i = library.size() - 1; i >= 0; i--){
         //STARTING FROM THE BACK OF THE INPUTVECTOR, MOVE EACH ELEMENT TO THEIR RESPECTIVE LOCATION BASED ON THE DIGITCOUNT ARRAY
-        int digit = (inputVector[i] / digitPlace) % 10;
-        resultArray[digitCount[digit] - 1] = inputVector[i];
+        int digit = (library[i].year / digitPlace) % 10;
+        resultArray[digitCount[digit] - 1] = library[i];
 
         //DECREMENT THE COUNT BY ONE
         digitCount[digit]--;
     }
     
     //TRANSFER THE RESULT INTO THE INPUT ARRAY
-    for (int i = 0; i < inputVector.size(); i++){
-        inputVector[i] = resultArray[i];
+    for (int i = 0; i < library.size(); i++){
+        library[i] = resultArray[i];
     }
 
     //DELETE THE DYNAMICALLY ALLOCATED ARRAY
@@ -148,16 +202,17 @@ void Library::countingSortInt(std::vector<int>& inputVector, int digitPlace) {
 
 
 // ===== TIM SORT ===== //
-void Library::timSort(std::string type) {
+void Library::timSort(std::string type, std::string find) {
 	auto start = std::chrono::high_resolution_clock::now();
 	helperTimSort(library, type);
 	auto stop = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 	double seconds = ((double)duration.count()) / ((double) 1000000);
 
-	printData(library, type);
-
-	std::cout << "Timsort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl;
+	// std::cout << "======== (Preview) Sorting the data... ========" << std::endl;
+	// printData(library, type, 25);
+	findData(find, type);
+	std::cout << "Timsort was completed in: " << duration.count() << " microseconds" << " or " << seconds << " seconds." << std::endl << std::endl;
 }
 
 // ===== READ CSV ===== //
@@ -232,34 +287,82 @@ void Library::readFile() {
 	myfStream.close();
 }
 
-// ===== PRINT ===== //
-void Library::printData(std::vector<Book>& library, std::string type) {
-    for (int i = 20000; i < 20100; i++) {
-		/*
-		if (type == "title")
-			std::cout << library[i].title << std::endl;
-		else if (type == "author")
-			std::cout << library[i].author << std::endl;
-		else if (type == "ISBN")
-			std::cout << library[i].ISBN << std::endl;
-		else if (type == "publisher")
-			std::cout << library[i].publisher << std::endl;
-		else if (type == "year")
-			std::cout << library[i].year << std::endl;
-		*/
-
-		if (type == "year" && library[i].year == 0)
-			continue;
-
-		std::cout << "Title: " << library[i].title << std::endl;
-		std::cout << "Author: " << library[i].author << std::endl;
-		std::cout << "Year: " << library[i].year << std::endl;
-		std::cout << "ISBN: " << library[i].ISBN << std::endl;	
-		std::cout << "Publisher: " << library[i].publisher << std::endl << std::endl;
-			
+std::string Library::makeLowerCase(std::string input){
+	std::string returnString = "";
+	for (int i = 0; i < input.size(); i++){
+		returnString += tolower(input[i]);
 	}
-        
+	return returnString;
+}
 
+void Library::findData(std::string find, std::string type) {
+	std::cout << "======== Search Results ========" << std::endl;
+
+	std::string lowerCaseFind = makeLowerCase(find);
+
+	std::vector<Book> found;
+	for (int i = 0; i < library.size(); i++) {
+		if (type == "title") {
+			std::string lowerCaseBook = makeLowerCase(library[i].title);
+			if (lowerCaseBook.find(lowerCaseFind) != std::string::npos) {
+				found.push_back(library[i]);
+				
+			}	
+		}
+			
+		else if (type == "author") {
+			std::string lowerCaseBook = makeLowerCase(library[i].author);
+			if (lowerCaseBook.find(lowerCaseFind) != std::string::npos)
+				found.push_back(library[i]);
+		}
+			
+		else if (type == "ISBN") {
+			std::string lowerCaseBook = makeLowerCase(library[i].ISBN);
+			if (lowerCaseBook.find(lowerCaseFind) != std::string::npos) {
+				found.push_back(library[i]);
+				
+			}	
+		}
+			
+		else if (type == "publisher") {
+			std::string lowerCaseBook = makeLowerCase(library[i].publisher);
+			if (lowerCaseBook.find(lowerCaseFind) != std::string::npos) {
+				found.push_back(library[i]);
+		 	}
+		}
+			
+		else if (type == "year") {
+			if (library[i].year == stoi(find))
+				found.push_back(library[i]);
+		}
+	}
+
+	if (found.size() >= 10) {
+		std::cout << "Viewing top 10 results..." << std::endl << std::endl;
+		printData(found, type, 10);
+	}
+		
+	else
+		printData(found, type, found.size());
+	
+}
+
+// ===== PRINT ===== //
+void Library::printData(std::vector<Book>& lib, std::string type, int n) {
+	if (lib.size() == 0) {
+			std::cout << "No results found." << std::endl;
+			return;
+	}
+
+    for (int i = 0; i < n; i++) {
+
+		std::cout << "Title: " << lib[i].title << std::endl;
+		std::cout << "Author: " << lib[i].author << std::endl;
+		std::cout << "Year: " << lib[i].year << std::endl;
+		std::cout << "ISBN: " << lib[i].ISBN << std::endl;	
+		std::cout << "Publisher: " << lib[i].publisher << std::endl << std::endl;
+		
+	}
 }
 
 // ===== TEST ===== //
@@ -270,7 +373,7 @@ void Library::testSort() {
 void Library::helperTestSort(std::vector<Book>& library) {
 	std::vector<std::string> data;
 	for (int i = 0; i < library.size(); i++) {
-		data.push_back(library[i].ISBN);
+		data.push_back(library[i].title);
 	}
 
 	std::sort(data.begin(), data.end());

@@ -23,6 +23,8 @@ class Library {
 	            year = myYear;
 	            publisher = myPublisher;
             }
+
+            Book(){}
         };
 
         std::vector<Book> library;
@@ -37,17 +39,21 @@ class Library {
         void merge(std::vector<T>& vals, int left, int mid, int right, std::string type);
 
         // Radix - int
-        void helperRadixSortInt(std::vector<int>& inputVector);
-        void countingSortInt(std::vector<int>& inputVector, int digitPlace);
+        void helperRadixSortInt(std::vector<Book>& library);
+        void countingSortInt(std::vector<Book>& library, int digitPlace);
 
         // Radix - string
-        void helperRadixSortString(std::vector<std::string>& inputVector);
-        void countingSortString(std::vector<std::string>& inputVector, int letterPlace);
-        int findMaxStringLength(std::vector<std::string> inputVector);
+        void helperRadixSortString(std::vector<Book>& library, std::string type);
+        void countingSortString(std::vector<Book>& library, int letterPlace, std::string type);
+        int findMinStringLength(std::vector<Book>& library, std::string type);
         int getASCII(std::string input, int letterIndex);
 
+        // Search
+        void findData(std::string find, std::string type);
+        std::string makeLowerCase(std::string input);
+
         // Print
-        void printData(std::vector<Book>& library, std::string type);
+        void printData(std::vector<Book>& library, std::string type, int n);
 
         // Test
         template <typename T>
@@ -58,9 +64,9 @@ class Library {
     public: 
          
         // ==== SORTING ALGORITHMS ==== //
-        void timSort(std::string type);
-        void radixSortString(std::string type);
-        void radixSortInt(std::string type);
+        void timSort(std::string type, std::string find);
+        void radixSortString(std::string type, std::string find);
+        void radixSortInt(std::string type, std::string find);
 
         // ==== READ AND PRINT ==== //
         void readFile();

@@ -24,6 +24,13 @@ int main() {
             continue;
         }
 
+        std::string data;
+        std::cout << "Search for... (enter a string): ";
+        std::cin.ignore();
+        std::getline(std::cin, data);
+        
+        std::cout << std::endl;
+
         std::cout << "What sort would you like to use? Choose an option from 1-2." << std::endl;
         std::cout << "1. Timsort" << std::endl << "2. Radix sort" << std::endl;
         int sortOption;
@@ -34,48 +41,45 @@ int main() {
             continue;
         }
 
-        
         if (searchOption == 1 && sortOption == 1) {
-            library.timSort("ISBN");
-            // search + print ISBN
+            library.timSort("ISBN", data);
         }
 
         else if (searchOption == 1 && sortOption == 2) {
-            library.radixSortString("ISBN");
+            library.radixSortString("ISBN", data);
         }
 
         else if (searchOption == 2 && sortOption == 1) {
-            library.timSort("title");
-            // search title(s)
+            library.timSort("title", data);
         }
         
         else if (searchOption == 2 && sortOption == 2) {
-            library.radixSortString("title");
+            library.radixSortString("title", data);
 
         }
 
         else if (searchOption == 3 && sortOption == 1) {
-            library.timSort("author");
+            library.timSort("author", data);
         }
 
         else if (searchOption == 3 && sortOption == 2) {
-            library.radixSortString("author");
+            library.radixSortString("author", data);
         }
 
         else if (searchOption == 4 && sortOption == 1) {
-            library.timSort("publisher");
+            library.timSort("publisher", data);
         }
 
         else if (searchOption == 4 && sortOption == 2) {
-            library.radixSortString("publisher");
+            library.radixSortString("publisher", data);
         }
 
         else if (searchOption == 5 && sortOption == 1) {
-            library.timSort("year");
+            library.timSort("year", data);
         }
 
         else if (searchOption == 5 && sortOption == 2) {
-            library.radixSortInt("year");
+            library.radixSortInt("year", data);
         }
 
 
