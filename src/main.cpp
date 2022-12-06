@@ -8,6 +8,8 @@ int main() {
     Library library;
     library.readFile();
 
+    // library.testSort();
+
     std::cout << "Welcome to GatorBooks!" << std::endl;
     // Menu starts here
     bool exit = false;
@@ -75,7 +77,6 @@ int main() {
         else if (searchOption == 5 && sortOption == 2) {
             library.radixSortInt("year");
         }
-        
 
 
         std::cout << "Continue searching? (Y/N)" << std::endl;

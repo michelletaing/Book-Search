@@ -30,11 +30,11 @@ class Library {
         // ==== PRIVATE HELPER FUNCTIONS ==== //
         // Timsort
         template <typename T>
-        void helperTimSort(std::vector<T>& vals);
+        void helperTimSort(std::vector<T>& vals, std::string type);
         template <typename T> 
-        void insertionSort(std::vector<T>& vals, int left, int right);
+        void insertionSort(std::vector<T>& vals, int left, int right, std::string type);
         template <typename T>
-        void merge(std::vector<T>& vals, int left, int mid, int right);
+        void merge(std::vector<T>& vals, int left, int mid, int right, std::string type);
 
         // Radix - int
         void helperRadixSortInt(std::vector<int>& inputVector);
@@ -43,11 +43,17 @@ class Library {
         // Radix - string
         void helperRadixSortString(std::vector<std::string>& inputVector);
         void countingSortString(std::vector<std::string>& inputVector, int letterPlace);
-        int findMinStringLength(std::vector<std::string> inputVector);
+        int findMaxStringLength(std::vector<std::string> inputVector);
+        int getASCII(std::string input, int letterIndex);
 
         // Print
+        void printData(std::vector<Book>& library, std::string type);
+
+        // Test
         template <typename T>
-        void printData(std::vector<T>& library, int n);
+        void testPrint(std::vector<T>& vals, int n);
+        void helperTestSort(std::vector<Book>& library);
+
         
     public: 
          
@@ -58,26 +64,56 @@ class Library {
 
         // ==== READ AND PRINT ==== //
         void readFile();
+
+        // ==== TEST ===== //
+        void testSort();
         
 };
 
 template <typename T>
-void Library::insertionSort(std::vector<T>& vals, int left, int right) {
+void Library::insertionSort(std::vector<T>& vals, int left, int right, std::string type) {
     for (int i = left + 1; i <= right; i++) { // first element is always placed in sorted
 		T key = vals[i];
 		int j = i - 1; 
 
 		// Compare key with each element in sorted till smaller val is found
-		while (key < vals[j] && j >= left) {
-			vals[j + 1] = vals[j]; 
-			j--;
-		}
+        if (type == "ISBN") {
+            while (key.ISBN < vals[j].ISBN && j >= left) {
+			    vals[j + 1] = vals[j]; 
+			    j--;
+		    }
+        }
+        else if (type == "author") {
+            while (key.author < vals[j].author && j >= left) {
+			    vals[j + 1] = vals[j]; 
+			    j--;
+		    }
+        }
+        else if (type == "title") {
+            while (key.title < vals[j].title && j >= left) {
+			    vals[j + 1] = vals[j]; 
+			    j--;
+		    }
+        }
+        else if (type == "publisher") {
+            while (key.publisher < vals[j].publisher && j >= left) {
+			    vals[j + 1] = vals[j]; 
+			    j--;
+		    }
+        }
+        else if (type == "year") {
+            while (key.year < vals[j].year && j >= left) {
+			    vals[j + 1] = vals[j]; 
+			    j--;
+		    }
+        }
+
 		vals[j + 1] = key;
 	}
 }
 
 template <typename T>
-void Library::merge(std::vector<T>& vals, int left, int mid, int right) {
+void Library::merge(std::vector<T>& vals, int left, int mid, int right, std::string type) {
     // Split vals in half: X is first half, Y is second half
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -97,14 +133,55 @@ void Library::merge(std::vector<T>& vals, int left, int mid, int right) {
     k = left;
 
     while (i < n1 && j < n2) {
-        if(X[i] <= Y[j]) {
-            vals[k] = X[i];
-            i++;
+        if (type == "ISBN") {
+            if(X[i].ISBN <= Y[j].ISBN) {
+                vals[k] = X[i];
+                i++;
+            }
+            else {
+                vals[k] = Y[j];
+                j++;
+            }
         }
-
-        else {
-            vals[k] = Y[j];
-            j++;
+        else if (type == "author") {
+            if(X[i].author <= Y[j].author) {
+                vals[k] = X[i];
+                i++;
+            }
+            else {
+                vals[k] = Y[j];
+                j++;
+            }
+        }
+        else if (type == "title") {
+            if(X[i].title <= Y[j].title) {
+                vals[k] = X[i];
+                i++;
+            }
+            else {
+                vals[k] = Y[j];
+                j++;
+            }
+        }
+        else if (type == "publisher") {
+            if(X[i].publisher <= Y[j].publisher) {
+                vals[k] = X[i];
+                i++;
+            }
+            else {
+                vals[k] = Y[j];
+                j++;
+            }
+        }
+        else if (type == "year") {
+            if(X[i].year <= Y[j].year) {
+                vals[k] = X[i];
+                i++;
+            }
+            else {
+                vals[k] = Y[j];
+                j++;
+            }
         }
 
         k++;
@@ -124,12 +201,12 @@ void Library::merge(std::vector<T>& vals, int left, int mid, int right) {
 }
 
 template <typename T>
-void Library::helperTimSort(std::vector<T>& vals) {
+void Library::helperTimSort(std::vector<T>& vals, std::string type) {
     int run = 32;
 
     // 1. Insertion sort on subarrays of size = run
     for (int i = 0; i < vals.size(); i += run)
-        insertionSort(vals, i, std::min((i + run - 1), ((int)vals.size() - 1)));
+        insertionSort(vals, i, std::min((i + run - 1), ((int)vals.size() - 1)), type);
 
     // 2. Start merging from size = run 
     for (int size = run; size < vals.size(); size = 2 * size) {
@@ -139,15 +216,17 @@ void Library::helperTimSort(std::vector<T>& vals) {
             int right = std::min((left + 2 * size - 1), ((int)vals.size() - 1));
 
             if(mid < right)
-                merge(vals, left, mid, right);
+                merge(vals, left, mid, right, type);
         }
     }
 }
 
-template <typename T>
-void Library::printData(std::vector<T>& library, int n) {
+// ===== TEST ===== //
+template <typename T> 
+void Library::testPrint(std::vector<T>& vals, int n) {
     for (int i = 0; i < n; i++)
-        std::cout << library[i] << std::endl;
+        std::cout << vals[i] << std::endl;
 }
+
 
 #endif
