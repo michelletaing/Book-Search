@@ -32,6 +32,7 @@ void Library::helperRadixSortString(std::vector<Book>& library, std::string type
         countingSortString(library, i, type);
 }
 
+//THIS FUNCTION (AND ITS HELPER FUNCTIONS) IS BASED ON THE RADIX SORT ARTICLE FROM GEEKSFORGEEKS
 void Library::countingSortString(std::vector<Book>& library, int letterPlace, std::string type) {
 	Book* resultArray = new Book[library.size()];
 
@@ -119,6 +120,7 @@ int Library::findMinStringLength(std::vector<Book>& library, std::string type) {
 }
 
 // ===== RADIX SORT (INT) ===== //
+//THIS FUNCTION (AND ITS HELPER FUNCTIONS) IS BASED ON THE RADIX SORT ARTICLE FROM PROGRAMIZ
 void Library::radixSortInt(std::string type, std::string find) {
 	auto start = std::chrono::high_resolution_clock::now(); 
     helperRadixSortInt(library);
