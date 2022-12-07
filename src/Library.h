@@ -8,8 +8,6 @@
 #include <sstream>
 #include <iomanip>
 
-// Remove all templates
-// template <typename T>
 class Library {
     private: 
         struct Book {
@@ -78,6 +76,7 @@ class Library {
 
 template <typename T>
 void Library::insertionSort(std::vector<T>& vals, int left, int right, std::string type) {
+    // ELEMENTS OF THIS CODE ARE FROM SORTING LECTURE
     for (int i = left + 1; i <= right; i++) { // first element is always placed in sorted
 		T key = vals[i];
 		int j = i - 1; 
@@ -120,6 +119,7 @@ void Library::insertionSort(std::vector<T>& vals, int left, int right, std::stri
 
 template <typename T>
 void Library::merge(std::vector<T>& vals, int left, int mid, int right, std::string type) {
+    // ELEMENTS OF THIS CODE ARE FROM SORTING LECTURE
     // Split vals in half: X is first half, Y is second half
     int n1 = mid - left + 1;
     int n2 = right - mid;
@@ -208,6 +208,7 @@ void Library::merge(std::vector<T>& vals, int left, int mid, int right, std::str
 
 template <typename T>
 void Library::helperTimSort(std::vector<T>& vals, std::string type) {
+    // ELEMENTS OF THIS CODE ARE REFERENCED FROM GEEKSFORGEEKS: https://www.geeksforgeeks.org/timsort/
     int run = 32;
 
     // 1. Insertion sort on subarrays of size = run
@@ -233,6 +234,5 @@ void Library::testPrint(std::vector<T>& vals, int n) {
     for (int i = 0; i < n; i++)
         std::cout << vals[i] << std::endl;
 }
-
 
 #endif

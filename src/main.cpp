@@ -8,11 +8,9 @@ int main() {
     Library library;
     library.readFile();
 
-    // library.testSort();
-
     std::cout << "Welcome to GatorBooks!" << std::endl;
-    // Menu starts here
     bool exit = false;
+
     while(!exit) {
         std::cout << "What would you like to search for? Choose an option from 1-5." << std::endl;
         std::cout << "1. ISBN" << std::endl << "2. Title" << std::endl << "3. Author" << std::endl << "4. Publisher" << std::endl << "5. Year" << std::endl;
@@ -41,55 +39,43 @@ int main() {
             continue;
         }
 
-        if (searchOption == 1 && sortOption == 1) {
+        if (searchOption == 1 && sortOption == 1)
             library.timSort("ISBN", data);
-        }
 
-        else if (searchOption == 1 && sortOption == 2) {
+        else if (searchOption == 1 && sortOption == 2)
             library.radixSortString("ISBN", data);
-        }
 
-        else if (searchOption == 2 && sortOption == 1) {
+        else if (searchOption == 2 && sortOption == 1)
             library.timSort("title", data);
-        }
         
-        else if (searchOption == 2 && sortOption == 2) {
+        else if (searchOption == 2 && sortOption == 2)
             library.radixSortString("title", data);
 
-        }
-
-        else if (searchOption == 3 && sortOption == 1) {
+        else if (searchOption == 3 && sortOption == 1)
             library.timSort("author", data);
-        }
 
-        else if (searchOption == 3 && sortOption == 2) {
+        else if (searchOption == 3 && sortOption == 2)
             library.radixSortString("author", data);
-        }
 
-        else if (searchOption == 4 && sortOption == 1) {
+        else if (searchOption == 4 && sortOption == 1)
             library.timSort("publisher", data);
-        }
 
-        else if (searchOption == 4 && sortOption == 2) {
+        else if (searchOption == 4 && sortOption == 2)
             library.radixSortString("publisher", data);
-        }
 
-        else if (searchOption == 5 && sortOption == 1) {
+        else if (searchOption == 5 && sortOption == 1)
             library.timSort("year", data);
-        }
 
-        else if (searchOption == 5 && sortOption == 2) {
+        else if (searchOption == 5 && sortOption == 2)
             library.radixSortInt("year", data);
-        }
-
 
         std::cout << "Continue searching? (Y/N)" << std::endl;
         char cont;
         std::cin >> cont;
-        if (cont == 'Y')
+        if (cont == 'Y' || cont == 'y')
             continue;
-        else {
-            std::cout << "Thank you for using GatorHours!" << std::endl;
+        else if (cont == 'N' || cont == 'n') {
+            std::cout << "Thank you for using GatorBooks!" << std::endl;
             exit = true;
         }    
 
